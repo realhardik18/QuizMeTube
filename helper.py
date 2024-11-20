@@ -1,5 +1,12 @@
-from pytube import YouTube
+from youtube_transcript_api import YouTubeTranscriptApi
+from dotenv import load_dotenv
+import assemblyai
+import os
 
-yt = YouTube("https://www.youtube.com/watch?v=kn8ZuOCn6r0")
-stream = yt.streams.get_by_itag(251)
-stream.download()
+load_dotenv()
+
+def get_transcript(video_id):
+    transcript = YouTubeTranscriptApi.get_transcript(video_id,languages=['en'])
+    return transcript
+
+
