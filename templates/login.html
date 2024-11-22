@@ -44,25 +44,28 @@
     <!-- Navbar -->
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">QuizMeTube</a>
+            <a class="navbar-brand" href="/">QuizMeTube</a>
         </div>
     </nav>
 
     <!-- Login Form -->
     <div class="form-container">
         <h3 class="text-center">Login to QuizMeTube</h3>
-        <form>
+        <form method="POST" action="/login">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" placeholder="Enter your username">
+                <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username"
+                    required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter your password">
+                <input type="password" name="password" class="form-control" id="password"
+                    placeholder="Enter your password" required>
             </div>
             <button type="submit" class="btn btn-purple w-100">Login</button>
-            <p class="text-center mt-3"><a href="signup.html" class="text-decoration-none text-purple">Sign up</a> if
-                you don't have an account.</p>
+            <p class="text-center mt-3">
+                <a href="/signup" class="text-decoration-none text-purple">Sign up</a> if you don't have an account.
+            </p>
         </form>
     </div>
 </body>
