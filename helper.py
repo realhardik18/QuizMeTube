@@ -2,6 +2,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from dotenv import load_dotenv
 import assemblyai as aai
 import os
+import yt_dlp
 
 load_dotenv()
 
@@ -12,6 +13,18 @@ def get_transcript(video_id):
     except Exception as e:
         print(e)
         return False
+
+def download_video(url, output_path='downloads'):
+    # Define options for yt-dlp
+    ydl_opts = {
+        'outtmpl': f'{output_path}/%(title)s.%(ext)s',  # Save videos with title as filename
+        'format': 'bestvideo+bestaudio/best',  # Best quality video + audio
+        'merge_output_format': 'mp4',  # Ensure the output is in MP4 format
+    }
+
+    # Download the video
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([url])
 
 def generate_questions(transcript):    
     aai.settings.api_key=os.getenv('API_KEY')
@@ -48,8 +61,4 @@ def generate_questions(transcript):
     response = aai.tasks.create(**task_payload)
     return response
 
-t=get_transcript(video_id='DAOFpgocfrg')
-if t:
-    print(generate_questions(t))
-else:
-    print('no')
+download_video('https://www.youtube.com/watch?v=PF2ad6pt5k0&ab_channel=KianLuke')
