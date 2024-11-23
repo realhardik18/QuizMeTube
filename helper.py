@@ -1,30 +1,8 @@
-from youtube_transcript_api import YouTubeTranscriptApi
 from dotenv import load_dotenv
 import assemblyai as aai
 import os
-import yt_dlp
 
 load_dotenv()
-
-def get_transcript(video_id):
-    try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id,languages=['en'])
-        return transcript
-    except Exception as e:
-        print(e)
-        return False
-
-def download_video(url, output_path='downloads'):
-    # Define options for yt-dlp
-    ydl_opts = {
-        'outtmpl': f'{output_path}/%(title)s.%(ext)s',  # Save videos with title as filename
-        'format': 'bestvideo+bestaudio/best',  # Best quality video + audio
-        'merge_output_format': 'mp4',  # Ensure the output is in MP4 format
-    }
-
-    # Download the video
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([url])
 
 def generate_questions(transcript):    
     aai.settings.api_key=os.getenv('API_KEY')
@@ -36,6 +14,4 @@ def generate_questions(transcript):
         prompt, final_model=aai.LemurModel.claude3_5_sonnet
     )
 
-    print(result.response)
-
-generate_questions(None)
+    result.response
