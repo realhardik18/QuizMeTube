@@ -19,7 +19,8 @@ Session(app)
 @app.route("/")
 def home():
     if "username" in session:
-        return f"Welcome, {session['username']}! <a href='/logout'>Logout</a>"
+        #return f"Welcome, {session['username']}! <a href='/logout'>Logout</a>"
+        return render_template('home.html',username=session['username'])
     return redirect(url_for("login"))
 
 @app.route("/login", methods=["GET", "POST"])

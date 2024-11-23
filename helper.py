@@ -28,37 +28,14 @@ def download_video(url, output_path='downloads'):
 
 def generate_questions(transcript):    
     aai.settings.api_key=os.getenv('API_KEY')
-    task_payload = {
-        "prompt": (
-            "Generate 5 multiple-choice questions (MCQs) strictly based on the provided transcript. "
-            "Ensure:\n"
-            "1. Each question tests a critical concept, fact, or insight discussed in the transcript.\n"
-            "2. Distractors (incorrect options) are plausible and based on related topics or common misconceptions.\n"
-            "3. The correct answer is clearly identifiable within the transcript.\n"
-            "4. Explanations for the correct answer are included for educational purposes.\n\n"
-            "Output the results strictly in the following JSON format:\n"
-            "{\n"
-            "  \"questions\": [\n"
-            "    {\n"
-            "      \"question\": \"Question text here\",\n"
-            "      \"options\": [\"Option A\", \"Option B\", \"Option C\", \"Option D\"],\n"
-            "      \"correct_answer\": \"Correct Option\",\n"
-            "      \"explanation\": \"Explanation of the correct answer\"\n"
-            "    },\n"
-            "    ...\n"
-            "  ]\n"
-            "}"
-        ),
-        "context": (
-            "This transcript contains educational material aimed at creating insightful questions to help students understand "
-            "the subject matter thoroughly. Focus on delivering factual, concept-driven, and engaging questions."
-        ),
-        "final_model": "anthropic/claude-3-5-sonnet",
-        "max_output_size": 3000,
-        "temperature": 0,
-        "transcript": transcript
-    }
-    response = aai.tasks.create(**task_payload)
-    return response
+    audio_file = "https://assembly.ai/sports_injuries.mp3"
+    transcriber = aai.Transcriber()
+    transcript = transcriber.transcribe(audio_file)    
+    prompt='You are a machine that generates MCQ questions strictly based on the provided transcript of an audio file. Given a transcript, create 10 high-quality multiple-choice questions. Each question should be factual, clear, and directly derived from the content of the transcript. Avoid adding any information not present in the transcript. out the answers in the following json format with no explanation: {questions:[{question:What is the main topic discussed in the audio?,options:[Option A,Option B,Option C,Option D],correct_answer:Option A},{question:Which example was provided to illustrate the concept?,options:[Option A,Option B,Option C,Option D],correct_answer:Option C}]}. your output should be only AND only this json data and nothing else'
+    result = transcript.lemur.task(
+        prompt, final_model=aai.LemurModel.claude3_5_sonnet
+    )
 
-download_video('https://www.youtube.com/watch?v=PF2ad6pt5k0&ab_channel=KianLuke')
+    print(result.response)
+
+generate_questions(None)
