@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bg-gray-800 p-8 rounded-md shadow-md text-white">
+    <!-- Header Section -->
+    <div class="mb-8 text-center">
+        <h2 class="text-3xl font-semibold mb-4">Quiz Results</h2>
+        <p class="text-lg text-gray-400 mb-6">Here’s how you performed:</p>
+
+        <!-- Score Display -->
+        <div class="bg-purple-600 p-6 rounded-lg shadow-lg">
+            <p class="text-xl font-bold mb-2">Your Score</p>
+            <p class="text-4xl font-extrabold text-white">{{ score }} / {{ total }}</p>
+        </div>    
+    </div>
+
+    <!-- Results List -->
+    <div class="space-y-6" id="quiz-results">
+        {% for result in results %}
+        <div class="p-6 bg-gray-700 rounded-lg shadow-md">
+            <p class="text-lg font-semibold mb-2">{{ result.question }}</p>
+            <div class="mb-4">
+                <p>Your Answer: 
+                    <span class="{{ 'text-green-400' if result.is_correct else 'text-red-400' }} font-semibold">
+                        {{ result.user_answer or "No Answer" }}
+                    </span>
+                </p>
+                <p>Correct Answer: 
+                    <span class="text-purple-400 font-semibold">{{ result.correct_answer }}</span>
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}
